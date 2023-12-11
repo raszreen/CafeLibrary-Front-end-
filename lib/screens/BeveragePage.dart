@@ -9,11 +9,18 @@ void main() {
 
 class cafeBeverage extends StatelessWidget {
   int qty=1;
+  List<int> _cart = [];
+
+  void _addToCart() {
+    setState(() {
+      _cart.add(qty);
+    });
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Library Beverage',
+     // title: 'Library Beverage',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
@@ -22,15 +29,15 @@ class cafeBeverage extends StatelessWidget {
         textDirection: TextDirection.ltr,
         child: Scaffold(
           appBar: AppBar(
+            title: const Text('Order Beverage'),
             actions: [
               IconButton(
-                onPressed: () {
-                  var Routes;
-                  Routes.instance.push(
-                      widget: const CartScreen(), context: context);
-                },
-
-                icon: const Icon(Icons.shopping_cart),
+                icon: Icon(Icons.add_shopping_cart),
+                tooltip: 'Add to cart',
+                onPressed: _addToCart,
+              ),
+              Text(
+                '$qty',
               ),
               // Text("Cafe Library",
               //   style: TextStyle(
@@ -48,12 +55,6 @@ class cafeBeverage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Cafe Library",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),),
-
                       TextFormField(
                         decoration: const InputDecoration(hintText: "Search ..."),
                       ),
@@ -155,53 +156,37 @@ class cafeBeverage extends StatelessWidget {
                               height: 30.0,
                             ),
 
-                            // for choose qty
-                            CupertinoButton(
-                              onPressed: () {
-                                if (qty >= 1) {
-                                  setState(() {
-                                    qty--;
-                                  });
-                                }
-                              },
-                              padding: EdgeInsets.zero,
-                              child: const CircleAvatar(
-                                child: Icon(Icons.remove),
-                              ),
+                            // choose for qty
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(Icons.remove),
+                                  onPressed: () {
+                                    setState(() {
+                                      qty--;
+                                    });
+                                  },
+                                ),
+                                Text('$qty'),
+                                IconButton(
+                                  icon: Icon(Icons.add),
+                                  onPressed: () {
+                                    setState(() {
+                                      qty++;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              qty.toString(),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            CupertinoButton(
-                              onPressed: () {
-                                setState(() {
-                                  qty++;
-                                });
-                              },
-                              padding: EdgeInsets.zero,
-                              child: const CircleAvatar(
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-
 
                             // for add to cart beverage
-                            const Spacer(),
+                            //const Spacer(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                OutlinedButton(
-                                  onPressed: () {},
+                                ElevatedButton(
+                                  onPressed: _addToCart,
                                   child: const Text("ADD TO CART"),
                                 ),
                               ],
